@@ -1,0 +1,29 @@
+<h5 style="text-align: center;">Days Off</h5>
+<div *ngIf="offDates.length > 0; then offDateList; else noOffDateList"></div>
+<ng-template #offDateList>
+    <div class="table-container scroll-container">
+        <table class="table table-light table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Start Off</th>
+                    <th scope="col">Finish Off</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let dateRange of offDates; index as i;">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ dateRange.startDate}}</td>
+                    <td>{{ dateRange.endDate}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</ng-template>
+<ng-template #noOffDateList>
+    <div class="scroll-container table-container">
+        <div class="center-contents">
+            <h2>No Dates yet</h2>
+        </div>
+    </div>
+</ng-template>

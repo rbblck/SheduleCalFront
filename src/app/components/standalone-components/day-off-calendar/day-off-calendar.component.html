@@ -1,0 +1,35 @@
+<h5 style="text-align: center;">Days Calendar</h5>
+<div *ngIf="offDates.length > 0; then calendar; else noCalendar"></div>
+<ng-template #calendar>
+    <div class="table-container scroll-container">
+        <table class="table table-light calendar-table table-bordered">
+            <thead>
+                <tr>
+                    <th *ngFor="let day of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']">{{ day }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let week of weeks">
+                    <td class="table-data-square" *ngFor="let date of week">
+                        <div *ngIf="date.getMonth() == currentMonth; then currentMonth; else notCurrentMonth"></div>
+                        <ng-template #currentMonth>
+                            <span style="font-weight: bolder;" class="calendar-text">{{ date.getDate() }}</span>
+                            <img class="calendar-icon" [src]="checkDateIsNotOff(date) ? 'assets/icons/duty_day/icons_duty_day_50.png' : 'assets/icons/off_day/icons_off_day_64.png'">
+                        </ng-template>
+                        <ng-template #notCurrentMonth>
+                            <span style="color: gray; size: 5px;" class="calendar-text">{{ date.getDate() }}</span>
+                            <img class="calendar-icon" [src]="checkDateIsNotOff(date) ? 'assets/icons/duty_day/icons_duty_day_50.png' : 'assets/icons/off_day/icons_off_day_64.png'">
+                        </ng-template>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</ng-template>
+<ng-template #noCalendar>
+    <div class="scroll-container table-container">
+        <div class="center-contents">
+            <h2>No Dates yet</h2>
+        </div>
+    </div>
+</ng-template>

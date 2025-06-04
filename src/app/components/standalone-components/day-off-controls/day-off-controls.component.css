@@ -1,0 +1,30 @@
+label {
+    font-size: smaller;
+    font-weight: bolder;
+}
+
+.scroll-container {
+    height: 400px; /* Set desired height */
+    width: 400px; /* Set desired width */
+    overflow-y: auto; /* Enable vertical scrollbar */
+    border: 1px solid #f8f9fa; /* Optional border styling */
+    border-radius: 10px;
+    border: solid, black, 1px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2)
+}
+
+.table-container {
+    width: 400px;
+    height: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #f8f9fa;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.expand-full-width {
+    width: 100%;
+}

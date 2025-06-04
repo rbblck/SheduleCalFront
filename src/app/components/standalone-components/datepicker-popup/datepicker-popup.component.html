@@ -1,0 +1,19 @@
+<form class="rowo">
+	<div class="col-12">
+		<div class="input-group">
+			<input
+				class="form-control"
+				placeholder="dd/mm/yyyy"
+				name="dp"
+				[(ngModel)]="model"
+				ngbDatepicker
+				#d="ngbDatepicker"
+                (dateSelect)="hasChanged($event)"
+			/>
+			<button style="width: 40px;" class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button">
+                <img class="calendar-icon" [src]="'assets/icons/date_picker/icons8-date-picker-32.png'">
+            </button>
+		</div>
+	</div>
+</form>
+

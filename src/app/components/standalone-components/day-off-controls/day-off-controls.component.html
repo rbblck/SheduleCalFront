@@ -1,0 +1,56 @@
+<h5 class="center-text">Working Pattern</h5>
+<div class="table-container">
+    <div class="formgroup scroll-container">
+        <div class="row g-0">
+            <div class="col p-2">
+                <label class="form-label">Start Next Work Cycle</label>
+                <app-datepicker-popup></app-datepicker-popup>
+            </div>
+        </div>
+        <div class="row g-0">
+            <div class="col-6 p-2">
+                <div class="form-group">
+                    <label class="form-label" for="work-days">Work Days</label>
+                    <select class="form-select" id="work-days" name="work-days" aria-label="work-days">
+                        <option *ngFor="let workday of this.getWorkingDays()" [value]="workday">{{ workday }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-6 p-2">
+                <div class="form-group">
+                    <label class="form-label" for="off-days">Off Days</label>
+                    <select class="form-select" id="off-days" name="off-days" aria-label="off-days">
+                        <option *ngFor="let offday of this.getOffDays()" [value]="offday">{{ offday }}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row g-0">
+            <div class="col-6 p-2">
+                <button class="expand-full-width" (click)="getOffDates()">Calculate</button>
+            </div>
+            <div class="col-6 p-2">
+                <button class="expand-full-width" (click)="reset()">Reset</button>
+            </div>
+        </div>
+        <hr style="padding: opx; margin: 0px;">
+        <div class="row g-0">
+            <div class="col-6 p-2">
+                <div class="form-group">
+                    <label class="form-label" for="month">Select Month</label>
+                    <select class="form-select" [ngModel]="displayedMonth" (ngModelChange)="changeMonth($event)" id="months" name="months" aria-label="months">
+                        <option *ngFor="let month of this.getMonths()" [value]="month">{{ month }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-6 p-2">
+                <div class="form-group">
+                    <label class="form-label" for="year">Select Year</label>
+                    <select class="form-select" [ngModel]="currentYear" (ngModelChange)="changeYear($event)" id="years" name="years" aria-label="years">
+                        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
