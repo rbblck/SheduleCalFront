@@ -1,35 +1,66 @@
-<h5 style="text-align: center;">Days Calendar</h5>
-<div *ngIf="offDates.length > 0; then calendar; else noCalendar"></div>
-<ng-template #calendar>
-    <div class="table-container scroll-container">
-        <table class="table table-light calendar-table table-bordered">
-            <thead>
-                <tr>
-                    <th *ngFor="let day of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']">{{ day }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let week of weeks">
-                    <td class="table-data-square" *ngFor="let date of week">
-                        <div *ngIf="date.getMonth() == currentMonth; then currentMonth; else notCurrentMonth"></div>
-                        <ng-template #currentMonth>
-                            <span style="font-weight: bolder;" class="calendar-text">{{ date.getDate() }}</span>
-                            <img class="calendar-icon" [src]="checkDateIsNotOff(date) ? 'assets/icons/duty_day/icons_duty_day_50.png' : 'assets/icons/off_day/icons_off_day_64.png'">
-                        </ng-template>
-                        <ng-template #notCurrentMonth>
-                            <span style="color: gray; size: 5px;" class="calendar-text">{{ date.getDate() }}</span>
-                            <img class="calendar-icon" [src]="checkDateIsNotOff(date) ? 'assets/icons/duty_day/icons_duty_day_50.png' : 'assets/icons/off_day/icons_off_day_64.png'">
-                        </ng-template>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</ng-template>
-<ng-template #noCalendar>
-    <div class="scroll-container table-container">
-        <div class="center-contents">
-            <h2>No Dates yet</h2>
-        </div>
-    </div>
-</ng-template>
+
+<h5 style="text-align: center;">{{ getMonths()[currentMonth] }} {{ currentYear }}</h5>
+
+        <div *ngIf="offDates.length > 0; then calendar; else noCalendar"></div>
+        <ng-template #calendar>
+            <div class="table-container scroll-container">
+                <div class="row">
+                    <div class="col">
+                        <table class="table table-light calendar-table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th *ngFor="let day of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']">{{ day }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let week of weeks">
+                                    <td class="table-data-square" *ngFor="let date of week">
+                                        <div *ngIf="this.startDate == ''; then notCurrentMonth; else currentMonth"></div>
+                                        <ng-template #currentMonth>
+                                            <span style="font-weight: bolder;" class="calendar-text">{{ date.getDate() }}</span>
+                                            <img class="calendar-icon" [src]="checkDateIsNotOff(date)">
+                                        </ng-template>
+                                        <ng-template #notCurrentMonth>
+                                            <span style="color: gray; size: 5px;" class="calendar-text">{{ date.getDate() }}</span>
+                                            <img class="calendar-icon" [src]="checkDateIsNotOff(date)">
+                                        </ng-template>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 center-contents">
+                        <button class="icon-button" (click)="previousMonthYear()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                              </svg>
+                        </button>
+                    </div>
+                    <div class="col-8 center-contents">
+                        <select class="form-select" [ngModel]="monthYearControl" (ngModelChange)="changeControl($event)">
+                            <option value="0">Month</option>
+                            <option value="1">Year</option>
+                          </select>
+                    </div>
+                    <div class="col-2 center-contents">
+                        <button class="icon-button" (click)="nextMonthYear()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                              </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template #noCalendar>
+            <div class="scroll-container table-container">
+                <div class="center-contents">
+                    <h2>No Dates yet</h2>
+                </div>
+            </div>
+        </ng-template>
+    
+
+

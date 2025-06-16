@@ -15,3 +15,36 @@
     margin-right: auto;
     background-color: #f8f9fa;
 }
+
+.calendar-icon {
+    width: 25px;
+    height: 25px;
+    position: absolute; /* Position relative to the container */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.calendar-text {
+    font-size: 10px;
+    position: absolute; /* Position relative to the container */
+    top: 5px;
+    left: 5px;
+}
+
+.other-month {
+    color: #aaa;
+}
+
+.calendar-table {
+    height: 330px;
+}
+
+.table-data-square {
+    position: relative; /* Make the container a positioned ancestor */
+    padding: 5px\;
+}
+
+.icon-button {
+    padding-top: 5px;
+}

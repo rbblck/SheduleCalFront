@@ -4,14 +4,15 @@
         <div class="row g-0">
             <div class="col p-2">
                 <label class="form-label">Start Next Work Cycle</label>
-                <app-datepicker-popup></app-datepicker-popup>
+                <app-datepicker-popup [displayDate]="this.scheduleRequest.startDate" (change)="changeStartDate($event)"></app-datepicker-popup>
             </div>
         </div>
         <div class="row g-0">
             <div class="col-6 p-2">
                 <div class="form-group">
                     <label class="form-label" for="work-days">Work Days</label>
-                    <select class="form-select" id="work-days" name="work-days" aria-label="work-days">
+                    <select class="form-select" [ngModel]="scheduleRequest.workingDays" (ngModelChange)="changeWorkDays($event);" id="work-days" name="work-days" aria-label="work-days">
+                        <option value="0">Select Work Days</option>
                         <option *ngFor="let workday of this.getWorkingDays()" [value]="workday">{{ workday }}</option>
                     </select>
                 </div>
@@ -19,7 +20,8 @@
             <div class="col-6 p-2">
                 <div class="form-group">
                     <label class="form-label" for="off-days">Off Days</label>
-                    <select class="form-select" id="off-days" name="off-days" aria-label="off-days">
+                    <select class="form-select" [ngModel]="scheduleRequest.daysOff" (ngModelChange)="changeDaysOff($event);" id="off-days" name="off-days" aria-label="off-days">
+                        <option value="0">Select Off Days</option>
                         <option *ngFor="let offday of this.getOffDays()" [value]="offday">{{ offday }}</option>
                     </select>
                 </div>
@@ -27,14 +29,59 @@
         </div>
         <div class="row g-0">
             <div class="col-6 p-2">
-                <button class="expand-full-width" (click)="getOffDates()">Calculate</button>
+                <button class="expand-full-width" (click)="calculateOffDates()">Calculate</button>
             </div>
             <div class="col-6 p-2">
                 <button class="expand-full-width" (click)="reset()">Reset</button>
             </div>
         </div>
-        <hr style="padding: opx; margin: 0px;">
-        <div class="row g-0">
+        
+        <!-- <div *ngIf="scheduleRequest.startDate == ''; then hideControls; else showControls"></div>
+        <ng-template #showControls>
+            <hr style="padding: opx; margin: 0px;">
+            <div class="row">
+                <div class="col-2 p-2 center-contents">
+                    <button class="icon-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="col-8 p-2 center-contents">
+                    <h3>Month</h3>
+                </div>
+                <div class="col-2 p-2 center-contents">
+                    <button class="icon-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                            <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2 p-2 center-contents">
+                    <button class="icon-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="col-8 p-2 center-contents">
+                    <h3>Year</h3>
+                </div>
+                <div class="col-2 p-2 center-contents">
+                    <button class="icon-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                            <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template #hideControls>
+        </ng-template> -->
+         
+        <!-- <div class="row g-0">
             <div class="col-6 p-2">
                 <div class="form-group">
                     <label class="form-label" for="month">Select Month</label>
@@ -51,6 +98,6 @@
                     </select>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>

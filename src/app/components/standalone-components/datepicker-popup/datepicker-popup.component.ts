@@ -31,6 +31,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 	readonly DELIMITER = '/';
 
 	parse(value: string): NgbDateStruct | null {
+
 		if (value) {
 			const date = value.split(this.DELIMITER);
 			return {
@@ -65,32 +66,50 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
 @Injectable()
 export class DatepickerPopupComponent {
-  model: NgbDateStruct | undefined;
-  displayDate: String = "Pick Start Date";
-  @Output() change = new EventEmitter();
+	
+	model: NgbDateStruct | undefined;
 
-  constructor(
-		private ngbCalendar: NgbCalendar,
-		private dateAdapter: NgbDateAdapter<string>,
-  ) {
-  }
+	@Input() displayDate: string = '';
 
-  hasChanged(value: any) {
-    this.change.emit(this.model);
-  }
+	@Output() change = new EventEmitter();
 
-  convertToReadableDate(dateString: string): string {
-    const date = new Date(dateString);
-    // Customize options as needed for your locale and preferences
-    const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    };
-    return date.toLocaleDateString(undefined, options);
-  }
+	constructor(
+			private ngbCalendar: NgbCalendar,
+			private dateAdapter: NgbDateAdapter<string>,
+	) { }
+  
+	ngOnChanges(changes: any) {
+	  this.convertToModel(this.displayDate);
+	}
 
-  get today() {
+	hasChanged(value: any) {
+		this.change.emit(this.model);
+	}
+
+	convertToReadableDate(dateString: string): string {
+		const date = new Date(dateString);
+		// Customize options as needed for your locale and preferences
+		const options: Intl.DateTimeFormatOptions = {
+		year: 'numeric',
+		month: 'short',
+		day: 'numeric',
+		};
+		return date.toLocaleDateString(undefined, options);
+	}
+
+	convertToModel(dateString: string) {
+		if (!dateString) {
+			this.model = undefined;
+			return;
+		}
+
+		if (dateString == '') {
+			this.model = undefined;
+			return;
+		}
+	}
+
+	get today() {
 		return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
 	}
 }

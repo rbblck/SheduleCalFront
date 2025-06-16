@@ -1,0 +1,22 @@
+<div class="center-contents">
+    <h1>Roster Calculator</h1>
+</div>
+<div class="row p-1">
+    <div class="col-md-12 col-xl-4 my-sm-5">
+        <app-day-off-controls 
+            (scheduleResquestChange)="changeSchedulerRequest($event)"
+        ></app-day-off-controls>
+    </div>
+    <div class="col-md-12 col-xl-4 my-sm-5">
+        <app-day-off-calendar
+            [startDate]="scheduleRequest.startDate"
+            [offDates]="offDates"
+        ></app-day-off-calendar>
+    </div>
+    <div class="col-md-12 col-xl-4 my-sm-5">
+        <app-days-off-list 
+            [offDates]="offDates"
+        ></app-days-off-list>
+    </div>
+</div>
+  

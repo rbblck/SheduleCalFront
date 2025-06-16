@@ -9,11 +9,16 @@
 				ngbDatepicker
 				#d="ngbDatepicker"
                 (dateSelect)="hasChanged($event)"
+				(click)="d.toggle()"
+				readonly="true"
+				autocomplete="off"
+				aria-label="Date Picker"
 			/>
 			<button style="width: 40px;" class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button">
-                <img class="calendar-icon" [src]="'assets/icons/date_picker/icons8-date-picker-32.png'">
+				<div class="center-contents">
+					<img class="calendar-icon" [src]="'assets/icons/date_picker/icons8-date-picker-32.png'">
+				</div>
             </button>
 		</div>
 	</div>
 </form>
-

@@ -1,13 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, Injectable, Input } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { OffDates } from 'src/app/interface/offDates';
+import { MONTHS, NUM_CAL_YEARS } from 'src/app/config/constants';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-day-off-calendar',
   templateUrl: './day-off-calendar.component.html',
   standalone: true,
   styleUrls: ['./day-off-calendar.component.css'],
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
 })
 
 @Injectable()
@@ -17,17 +20,39 @@ export class DayOffCalendarComponent {
   @Input() offDates: OffDates[] = [];
   @Input() currentMonth: number = 0;
   @Input() currentYear: number = 0;
+  @Input() workDays = 0;
+  @Input() offDays = 0;
 
   weeks: any[][] = [];
+  displayedMonth: string = '';
+  monthYearControl: number = 0; // 0 - month, 1 - year
+  numberOfYesrsCalculated: number = NUM_CAL_YEARS; // Number of years to calculate from the start date
 
   constructor() {
     this.onInit();
   }
 
-  onInit() {}
+  onInit() {
+  }
   
   ngOnChanges(changes: any) {
+
+    if (this.startDate === '') {
+      console.error('Start date is not set.');
+      return;
+    }
+
+    const startDateObj = this.parseDate(this.startDate)
+    this.currentMonth = startDateObj.getMonth(); // 0-11
+    this.currentYear = startDateObj.getFullYear();
+
+    if (this.offDates.length > 0) {
       this.generateCalendar();
+    }
+  }
+
+  changeControl(control: number) {
+    this.monthYearControl = control;
   }
 
   generateCalendar() {
@@ -71,11 +96,16 @@ export class DayOffCalendarComponent {
 
   checkDateIsNotOff(date: Date) {
     // Check if the date is before the start date
-    if (date < this.parseDate(this.startDate)) {
-      return false;
-    }
+    const startDateObj = this.parseDate(this.startDate)
+    const endDateObj = this.parseDate(this.offDates[this.offDates.length - 1].endDate);
+                          
+    const lastDateToEndMonthObj = this.getLastDayOfMonth(endDateObj);
+
+    let isNotOff: string = 'assets/icons/duty_day/icons_duty_day_50.png'; // Default icon for off day
     
-    let isNotOff: boolean = true;
+    if (date < startDateObj || date > endDateObj) {
+      isNotOff = 'assets/icons/not_calculated/not-calculated-48.png'; // Date is outside the range of the calendar
+    }
 
     if (this.offDates.length != 0) {
       
@@ -85,9 +115,10 @@ export class DayOffCalendarComponent {
       const dateStr = day + '/' + month + '/' + year;
     
       this.offDates.forEach((oro) => {
+
         if (this.isDateInRange(dateStr, oro.startDate, oro.endDate)) {
-          isNotOff = false;
-        } 
+          isNotOff = 'assets/icons/off_day/icons_off_day_64.png'; // Icon for duty day
+        }
       });
     }
 
@@ -107,12 +138,107 @@ export class DayOffCalendarComponent {
     startDateStr: string,
     endDateStr: string
   ): boolean {
-  
     const date = this.parseDate(dateStr);
     const startDate = this.parseDate(startDateStr);
     const endDate = this.parseDate(endDateStr);
   
     // Check if date is within range (inclusive)
     return date >= startDate && date <= endDate;
+  }
+
+  getLastDayOfMonth(date: Date): Date {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+  
+    // First day of next month
+    const firstDayNextMonth = new Date(year, month + 1, 1);
+    // Last day of current month
+    const lastDay = new Date(firstDayNextMonth.getTime() - 1);
+    // Set time to midnight
+    lastDay.setHours(0, 0, 0, 0);
+    return lastDay;
+  }
+
+  previousMonthYear() {
+    // Create a date object based on the current year, month, and start date
+    const date = new Date(this.currentYear, this.currentMonth, this.parseDate(this.startDate).getDate());
+    const startDateObj = this.parseDate(this.startDate)
+
+    // Decrement the month or year based on the control
+    if (this.monthYearControl == 0) {
+      date.setMonth(date.getMonth() - 1); // decrement by one month
+
+      // Ensure the month does not go below the start date
+      if (date >= startDateObj) {
+        this.currentMonth = date.getMonth();
+        this.currentYear = date.getFullYear();
+      }
+    } else if (this.monthYearControl == 1) {
+      date.setFullYear(date.getFullYear() - 1); // decrement by one year
+
+      // Ensure the year does not go below the start date
+      if (date >= startDateObj) {
+        this.currentMonth = date.getMonth();
+        this.currentYear = date.getFullYear();
+      } else {
+        this.currentMonth = startDateObj.getMonth();
+        this.currentYear = startDateObj.getFullYear();
+      }
+    }
+
+    this.generateCalendar();
+  }
+
+  nextMonthYear() {
+    // Create a date object based on the current year, month, and start date
+    const date = new Date(this.currentYear, this.currentMonth, this.parseDate(this.startDate).getDate());
+
+    // Calculate the maximum date based on the start date
+    const startDateObj = this.parseDate(this.startDate)
+    const maxDate = new Date(startDateObj.getFullYear(), startDateObj.getMonth(), startDateObj.getDay());
+    maxDate.setFullYear(maxDate.getFullYear() + NUM_CAL_YEARS);
+    maxDate.setMonth(maxDate.getMonth());
+
+    // Increment the month or year based on the control
+    if (this.monthYearControl == 0) {
+      date.setMonth(date.getMonth() + 1); // increment by one month
+
+      // Ensure the month does not exceed the maximum date
+      if (date <= maxDate) {
+        this.currentMonth = date.getMonth();
+        this.currentYear = date.getFullYear();
+      }
+    } else if (this.monthYearControl == 1) {
+      date.setFullYear(date.getFullYear() + 1); // increment by one year
+
+      // Ensure the year does not exceed the maximum date
+      if (date <= maxDate) {
+        this.currentMonth = date.getMonth();
+        this.currentYear = date.getFullYear();
+      } else {
+        this.currentMonth = maxDate.getMonth();
+        this.currentYear = maxDate.getFullYear();
+      }
+    }
+
+    this.generateCalendar();
+  }
+
+  getLastDayCalculated(): Date {
+    const startDateObj = this.parseDate(this.startDate)
+    return  new Date(
+                      startDateObj.getFullYear() + NUM_CAL_YEARS, 
+                      startDateObj.getMonth() -1, 
+                      startDateObj.getDate()
+                    );
+  }
+
+  getMonths() {
+    return MONTHS;
+  }
+
+  getCurrentDisplayMonth(monthIndex: number): string {
+    const months = this.getMonths();
+    return months[monthIndex];
   }
 }
