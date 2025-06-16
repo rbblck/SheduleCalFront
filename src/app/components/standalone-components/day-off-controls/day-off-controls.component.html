@@ -29,10 +29,10 @@
         </div>
         <div class="row g-0">
             <div class="col-6 p-2">
-                <button class="expand-full-width" (click)="calculateOffDates()">Calculate</button>
+                <button class="expand-full-width" [disabled]="calculationNotReady" (click)="calculateOffDates()">Calculate</button>
             </div>
             <div class="col-6 p-2">
-                <button class="expand-full-width" (click)="reset()">Reset</button>
+                <button class="expand-full-width" [disabled]="!resetReady" (click)="reset()">Reset</button>
             </div>
         </div>
         

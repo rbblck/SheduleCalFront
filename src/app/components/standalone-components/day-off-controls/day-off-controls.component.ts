@@ -20,6 +20,8 @@ export class DayOffControlsComponent {
 
   scheduleRequest!: ScheduleRequest;
   years!: number[];
+  resetReady!: boolean;
+  calculationNotReady!: boolean;
   
   @Output() resetOffDates = new EventEmitter<OffDates[]>();
   @Output() scheduleResquestChange = new EventEmitter<ScheduleRequest>();
@@ -46,6 +48,9 @@ export class DayOffControlsComponent {
     for (let year = startYear; year <= endYear; year++) {
       this.years.push(year);
     }
+
+    this.resetReady = false;
+    this.calculationNotReady = true;
   }
 
   reset() {
@@ -57,6 +62,7 @@ export class DayOffControlsComponent {
     };
 
     this.scheduleResquestChange.emit(this.scheduleRequest); // Emit an event to reset off dates in the parent component
+    this.setResetReady(); // Check if the calculation is ready after changing days off
   }
 
   calculateOffDates() {
@@ -74,14 +80,19 @@ export class DayOffControlsComponent {
     }
     
     this.scheduleResquestChange.emit(this.scheduleRequest); // Emit the current schedule request to the parent component
+    this.calculationNotReady = true;
   }
 
   changeDaysOff(daysOffDis: number) {
     this.scheduleRequest.daysOff = daysOffDis;
+    this.setResetReady(); // Check if the calculation is ready after changing days off
+    this.setCalculationReady(); // Check if the calculation is ready after changing days off
   }
 
   changeWorkDays(workDaysDis: number) {
     this.scheduleRequest.workingDays = workDaysDis;
+    this.setResetReady(); // Check if the calculation is ready after changing days off
+    this.setCalculationReady(); // Check if the calculation is ready after changing days off
   }
 
   changeStartDate(newStartDate: string) {
@@ -101,6 +112,8 @@ export class DayOffControlsComponent {
     this.scheduleRequest.daysOff = 0;
 
     this.scheduleResquestChange.emit(this.scheduleRequest);
+    this.setResetReady(); // Check if the calculation is ready after changing days off
+    this.setCalculationReady(); // Check if the calculation is ready after changing days off
   }
 
   getOffDays() :number[] {
@@ -109,6 +122,26 @@ export class DayOffControlsComponent {
 
   getWorkingDays() : number[] {
     return DAYS_WORKING;
+  }
+
+  setCalculationReady() {
+    if (this.scheduleRequest.startDate == '' 
+        || this.scheduleRequest.workingDays == 0 
+        || this.scheduleRequest.daysOff == 0) {
+      this.calculationNotReady = true; // Disable calculation if any field is empty
+      return;
+    }
+    this.calculationNotReady = false;
+  }
+
+  setResetReady() {
+    if (this.scheduleRequest.startDate == '' 
+        || this.scheduleRequest.workingDays == 0 
+        || this.scheduleRequest.daysOff == 0) {
+      this.resetReady = false; // Disable calculation if any field is empty
+      return;
+    }
+    this.resetReady = true;
   }
 }
 

@@ -66,12 +66,12 @@ export class CalculatorComponent {
           (responce as OffDates[]).forEach((dateRangeObj) => {
             tempOffDates.push(dateRangeObj);
           });
-          this.offDates = tempOffDates;
         },
         error(error: any) {
           console.error('an error occurred...');
         },
         complete: () => {
+          this.offDates = tempOffDates;
         }
       }
     );

@@ -38,6 +38,24 @@ button:hover {
     transform: translateY(-2px); /* Slight lift effect on hover */
 }
 
+button:disabled {
+    background: linear-gradient(to bottom, #a7d5f9, #cccccc); /* Light blue gradient */
+    border: none; /* Optional: remove default border */
+    padding: 10px 20px; /* Adjust padding as needed */
+    border-radius: 5px; /* Optional: rounded corners */
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), /* Inner highlight */
+                0 4px 6px rgba(0, 0, 0, 0.1); /* Outer shadow for depth */
+    color: #666666; /* Text color */
+    font-size: 16px; /* Adjust font size as needed */
+    cursor: not-allowed;
+    pointer-events: none; 
+    transition: all 0.3s ease;
+    font-family: 'BDelicous';
+    padding: 10px;
+    opacity: 0.6;
+    display: block;
+}
+
 .center-contents {
     display: flex;               /* Enable Flexbox */
     justify-content: center;     /* Horizontal centering */

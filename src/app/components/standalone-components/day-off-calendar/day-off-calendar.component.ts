@@ -3,7 +3,6 @@ import { Component, Injectable, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { OffDates } from 'src/app/interface/offDates';
 import { MONTHS, NUM_CAL_YEARS } from 'src/app/config/constants';
-import { first } from 'rxjs';
 
 @Component({
   selector: 'app-day-off-calendar',
@@ -18,11 +17,11 @@ export class DayOffCalendarComponent {
 
   @Input() startDate: string = "";
   @Input() offDates: OffDates[] = [];
-  @Input() currentMonth: number = 0;
-  @Input() currentYear: number = 0;
-  @Input() workDays = 0;
-  @Input() offDays = 0;
 
+  currentMonth: number = 0;
+  currentYear: number = 0;
+  workDays = 0;
+  offDays = 0;
   weeks: any[][] = [];
   displayedMonth: string = '';
   monthYearControl: number = 0; // 0 - month, 1 - year
@@ -38,7 +37,6 @@ export class DayOffCalendarComponent {
   ngOnChanges(changes: any) {
 
     if (this.startDate === '') {
-      console.error('Start date is not set.');
       return;
     }
 
@@ -241,4 +239,6 @@ export class DayOffCalendarComponent {
     const months = this.getMonths();
     return months[monthIndex];
   }
+
+
 }
