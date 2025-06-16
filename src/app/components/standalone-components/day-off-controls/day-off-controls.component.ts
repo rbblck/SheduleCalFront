@@ -63,6 +63,7 @@ export class DayOffControlsComponent {
 
     this.scheduleResquestChange.emit(this.scheduleRequest); // Emit an event to reset off dates in the parent component
     this.setResetReady(); // Check if the calculation is ready after changing days off
+    this.calculationNotReady = true;
   }
 
   calculateOffDates() {
