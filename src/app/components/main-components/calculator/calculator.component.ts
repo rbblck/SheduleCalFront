@@ -2,9 +2,6 @@ import { Component } from '@angular/core';
 import { ScheduleRequest } from 'src/app/interface/scheduleRequest';
 import { PostService } from 'src/app/service/post.service';
 import { OffDates } from 'src/app/interface/offDates';
-// Update the import path below to the correct relative path and filename for DaysOffListComponent
-// Update the import path below to the correct relative path and filename for DaysOffListComponent
-// import { DaysOffListComponent } from "../standalone-components/days-off-list/days-off-list.component";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DaysOffListComponent } from '../../standalone-components/days-off-list/days-off-list.component';

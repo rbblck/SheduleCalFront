@@ -12,6 +12,7 @@ import { PostService } from './service/post.service';
 import { FormsModule } from '@angular/forms';
 import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { DatepickerPopupComponent } from './components/standalone-components/datepicker-popup/datepicker-popup.component';
+import { CalculatorComponent } from './components/main-components/calculator/calculator.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { DatepickerPopupComponent } from './components/standalone-components/dat
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    DatepickerPopupComponent
+    DatepickerPopupComponent,
+    CalculatorComponent
     
   ],
   providers: [
